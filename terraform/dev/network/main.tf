@@ -29,11 +29,11 @@ module "network" {
   new_bits_public     = 2
   natgw_count         = "none"
 
-  #app_direct_access = {
-  #  "vpn" = {
-  #    "x.x.x.x/32" = "VPN",
-  #  }
-  #}
+  app_direct_access = {
+    "vpn" = {
+      "0.0.0.0/32" = "VPN",
+    }
+  }
 
   public_ips = {
     "0.0.0.0/0" = "Open",
