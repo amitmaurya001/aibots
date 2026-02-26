@@ -1,0 +1,6 @@
+Flask==3.1.2
+flask-restful==0.3.10
+flake8==7.3.0
+pytest==8.4.2
+mock==5.2.0
+gunicorn==23.0.0

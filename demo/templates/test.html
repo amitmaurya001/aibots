@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Flask Static Assets Demo</title>
+
+  <!-- Linked CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app_v2.css') }}" />
+  <!-- The Integration URL comes from your Web ACL page in the AWS console -->
+  <script src="{{ waf_integration_url }}/challenge.js" defer></script>
+
+  <style>
+    /* Inline fallback styles only for boot UI before checks run */
+    html, body { margin:0; min-height:100%; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🚀 Flask Demo App</h1>
+    <p>Welcome To The Complete Guide to AWS LLM Bot Protection with WAF and CloudFron</p>
+    <button id="demo-btn" type="button">Click Me</button>
+     <pre id="out"></pre>
+  </div>
+
+  <!-- --- HARD-FAIL CSS CHECK --- -->
+  <script>
+    (function () {
+      // The external CSS sets #css-sentinel width: 123px.
+      var s = document.createElement('div');
+      s.id = 'css-sentinel';
+      s.style.position = 'absolute';
+      s.style.left = '-9999px';
+      document.body.appendChild(s);
+
+      var ok = getComputedStyle(s).width === '123px';
+      s.remove();
+
+      if (!ok) {
+        document.body.innerHTML = ""; // wipe UI
+        throw new Error("Critical CSS failed to load.");
+      }
+    })();
+  </script>
+
+  <!-- --- JS (load synchronously so the next block can verify) --- -->
+  <script
+    src="{{ url_for('static', filename='js/app_v2.js') }}"
+    onerror="document.body.innerHTML='';throw new Error('Critical JS failed to load.');">
+  </script>
+
+  <!-- --- HARD-FAIL JS CHECK --- -->
+  <script>
+    if (!window.__APP_JS_LOADED__) {
+      document.body.innerHTML = "";
+      throw new Error("Critical JS symbol missing (app.js not executed).");
+    }
+  </script>
+
+  <!-- Use the AWS WAF SDK to get a token and call protected endpoints -->
+  <script>
+    // Ensure token is ready before first call (optional but nice)
+    window.addEventListener('DOMContentLoaded', async () => {
+      if (window.AwsWafIntegration && AwsWafIntegration.getToken) {
+        try { await AwsWafIntegration.getToken(); } catch (e) { /* ignore */ }
+      }
+    });
+
+    document.getElementById('demo-btn').addEventListener('click', async () => {
+      const out = document.getElementById('out');
+      out.textContent = 'Calling /bot-protected/ping via AwsWafIntegration.fetch...';
+
+      try {
+        // 👇 This automatically includes the WAF token (cookie or header)
+        const resp = await AwsWafIntegration.fetch('/bot-protected/ping', {
+          method: 'GET',
+          credentials: 'include'
+        });
+        const text = await resp.text();
+        out.textContent = `Status ${resp.status}: ${text}`;
+      } catch (err) {
+        out.textContent = `Call failed: ${err && err.message ? err.message : err}`;
+      }
+    });
+  </script>
+</body>
+</html>

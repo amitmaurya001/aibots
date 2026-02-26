@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+    udemy_dev_flask_app:
+        build:
+            context: .
+        ports:
+          - 5000:5000
+        container_name: "udemy_dev_flask_app"
+        volumes:
+            - ./demo/:/app/demo
+            - ./tests/:/app/tests
+        
+

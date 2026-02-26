@@ -1,0 +1,6 @@
+REGION="eu-central-1"
+ECR_URI="004571937517.dkr.ecr.$REGION.amazonaws.com"
+ECR_REPOSITORY="ai-bots-dev-flask"
+ECR_REPOSITORY_URI="$ECR_URI/$ECR_REPOSITORY"
+TAG="latest"
+export IMAGE_ID="$ECR_REPOSITORY_URI:$TAG"
