@@ -4,7 +4,7 @@ terraform {
     dynamodb_table = "terraform-state-ai-bots"
     encrypt        = true
     key            = "dev-sns.tfstate"
-    region         = "eu-central-1"
+    region         = "us-east-1"
   }
 }
 
@@ -54,7 +54,7 @@ module "sns_nv_dev_alerts" {
   subscriptions = {
     sergii = {
       protocol = "email"
-      endpoint = "sergiid.blog@gmail.com"
+      endpoint = "amitdostzzz@gmail.com"
     },
   }
 }
