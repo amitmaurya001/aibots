@@ -33,7 +33,7 @@ module "network" {
   #  "vpn" = {
   #    "x.x.x.x/32" = "VPN",
   #  }
-  }
+  #}
 
   public_ips = {
     "0.0.0.0/0" = "Open",
