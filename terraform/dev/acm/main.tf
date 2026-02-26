@@ -1,10 +1,10 @@
 terraform {
   backend "s3" {
-    bucket         = "terraform-state-ai-bots"
-    dynamodb_table = "terraform-state-ai-bots"
+    bucket         = "terraform-state-ai-bots-amit"
+    dynamodb_table = "terraform-state-ai-bots-amit"
     encrypt        = true
     key            = "dev-acm-cert.tfstate"
-    region         = "eu-central-1"
+    region         = "us-east-1"
   }
 }
 
