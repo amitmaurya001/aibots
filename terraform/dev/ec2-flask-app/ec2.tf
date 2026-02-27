@@ -6,7 +6,7 @@ module "ec2" {
   project    = var.project
   region     = var.region
 
-  volume_size       = 20
+  volume_size       = 12
   key_name          = "devsecops"
   instance_type     = "t3.small"
   az                = "us-east-1a"
