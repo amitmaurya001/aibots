@@ -7,10 +7,10 @@ module "ec2" {
   region     = var.region
 
   volume_size       = 20
-  key_name          = "dev-ec2-2"
-  instance_type     = "t3a.small"
-  az                = "eu-central-1a"
-  image_id          = "ami-0422391cdcbc2d9b8" # raw ubuntu 24.04 LTS
+  key_name          = "devsecops"
+  instance_type     = "t3.small"
+  az                = "us-east-1a"
+  image_id          = "ami-0b6c6ebed2801a5cb" # raw ubuntu 24.04 LTS
   app_name          = "flask"
 
   sg      = data.terraform_remote_state.network.outputs.sg_app

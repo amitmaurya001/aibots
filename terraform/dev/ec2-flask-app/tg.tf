@@ -15,7 +15,7 @@ module "target_group" {
   alb_dns_name     = data.terraform_remote_state.alb.outputs["alb_dns_name"]
 
   host_headers = [
-    "sergiitest.website"
+    "flask.amitwebsite.online"
   ]
 
   deregistration_delay = 60
