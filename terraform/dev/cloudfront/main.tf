@@ -46,8 +46,26 @@ provider "aws" {
   }
 }
 
+# Required: CloudFront, WAF, Lambda@Edge, and Firehose must all live in us-east-1.
+# The cloudfront module uses this alias internally (provider = aws.nv).
+provider "aws" {
+  alias               = "nv"
+  allowed_account_ids = [var.account_id]
+  region              = "us-east-1"
+
+  default_tags {
+    tags = local.common_tags
+  }
+}
+
 module "cloudfront" {
   source = "../../modules/cloudfront"
+
+  # Pass the us-east-1 provider alias into the module so it can deploy
+  # WAF, Lambda@Edge, Firehose, and related resources in the correct region.
+  providers = {
+    aws.nv = aws.nv
+  }
 
   account_id = var.account_id
   env        = var.env
@@ -73,7 +91,7 @@ module "cloudfront" {
 
   name_prefix = local.name_prefix
 
-  ips_to_be_allowed  = ["x.x.x.x/32"]
+  ips_to_be_allowed = ["x.x.x.x/32"]
 
   alarm_sns_topic_name = "udemy-dev-alerts"
   common_tags          = local.common_tags
