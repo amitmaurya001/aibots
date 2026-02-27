@@ -1,10 +1,10 @@
 terraform {
   backend "s3" {
-    bucket         = "terraform-state-ai-bots"
-    dynamodb_table = "terraform-state-ai-bots"
+    bucket         = "terraform-state-ai-bots-amit"
+    dynamodb_table = "terraform-state-ai-bots-amit"
     encrypt        = true
     key            = "dev-alb.tfstate"
-    region         = "eu-central-1"
+    region         = "us-east-1"
   }
 }
 
@@ -22,7 +22,7 @@ data "terraform_remote_state" "network" {
   backend = "s3"
 
   config = {
-    bucket = "terraform-state-ai-bots"
+    bucket = "terraform-state-ai-bots-amit"
     key    = "dev-network.tfstate"
     region = var.region
   }
@@ -32,7 +32,7 @@ data "terraform_remote_state" "acm" {
   backend = "s3"
 
   config = {
-    bucket = "terraform-state-ai-bots"
+    bucket = "terraform-state-ai-bots-amit"
     key    = "dev-acm-cert.tfstate"
     region = var.region
   }
