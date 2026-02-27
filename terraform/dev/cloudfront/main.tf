@@ -9,11 +9,11 @@ locals {
 
 terraform {
   backend "s3" {
-    bucket         = "terraform-state-ai-bots"
-    dynamodb_table = "terraform-state-ai-bots"
+    bucket         = "terraform-state-ai-bots-amit"
+    dynamodb_table = "terraform-state-ai-bots-amit"
     encrypt        = true
     key            = "dev-cloudfront.tfstate"
-    region         = "eu-central-1"
+    region         = "us-east-1"
   }
 }
 
@@ -21,7 +21,7 @@ data "terraform_remote_state" "alb" {
   backend = "s3"
 
   config = {
-    bucket = "terraform-state-ai-bots"
+    bucket = "terraform-state-ai-bots-amit"
     key    = "dev-alb.tfstate"
     region = var.region
   }
@@ -31,7 +31,7 @@ data "terraform_remote_state" "acm" {
   backend = "s3"
 
   config = {
-    bucket = "terraform-state-ai-bots"
+    bucket = "terraform-state-ai-bots-amit"
     key    = "dev-acm-cert.tfstate"
     region = var.region
   }
@@ -55,7 +55,7 @@ module "cloudfront" {
   region     = var.region
 
   apex_domains = {
-    "sergiitest.website" = {
+    "amitwebsite.online" = {
       alb_dns_name          = data.terraform_remote_state.alb.outputs.alb_dns_name,
       s3_origin_bucket_name = "static-content-website"
       content_language      = "en_GB"
@@ -65,7 +65,7 @@ module "cloudfront" {
   }
 
   bot_forwarding_domains = toset([
-    "sergiitest.website"
+    "amitwebsite.online"
   ])
   bot_user_agent_pattern = "testbot|udemybot"
   # bot_user_agent_pattern = "gptbot|Gemini|SemrushBot|Qwantbot|msnbot|AwarioBot|AhrefsBot|YandexBot|DataForSeoBot|Exabot|HaloBot|petalbot|Amazonbot|Applebot|IbouBot|ClaudeBot|serpstatbot|mj12bot|SeekportBot|PerplexityBot|testbot"
